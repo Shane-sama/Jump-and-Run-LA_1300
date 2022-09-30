@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class Player : MonoBehaviour
     private Rigidbody2D rb;
     private Vector3 rotation;
     private CoinManager m;
+    public GameObject panel;
+    public GameObject kamera;
     // Start is called before the first frame update
     void Start()
     {
@@ -39,6 +42,8 @@ public class Player : MonoBehaviour
             rb.AddForce(Vector2.up * jumph, ForceMode2D.Impulse);
             isgrounded = false;
         }
+
+        kamera.transform.position = new Vector3(transform.position.x, 0, -10);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -47,6 +52,11 @@ public class Player : MonoBehaviour
         {
             isgrounded = true;
         }
+        if (collision.gameObject.tag == "Enemy")
+        {
+            panel.SetActive(true);
+            Destroy(gameObject);
+        }
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -54,6 +64,15 @@ public class Player : MonoBehaviour
         {
             m.Addmoney();
             Destroy(other.gameObject);
+        }
+        if (other.gameObject.tag == "Spike")
+        {
+            panel.SetActive(true);
+            Destroy(gameObject);
+        }
+        if (other.gameObject.tag == "Finish")
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
     }
 }
