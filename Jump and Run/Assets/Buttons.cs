@@ -18,6 +18,6 @@ public class Buttons : MonoBehaviour
     }
     public void Restart()
     {
-        SceneManager.LoadScene("MainScene");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }
